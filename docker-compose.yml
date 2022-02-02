@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+  verdaccio:
+    image: verdaccio/verdaccio
+    container_name: "verdaccio"
+    hostname: verdaccio
+    restart: always
+    networks:
+      - proxy
+    environment:
+      - VERDACCIO_PORT=4873
+    expose:
+      - "4873"
+    volumes:
+      - "./storage:/verdaccio/storage"
+      - "./config:/verdaccio/conf"
+      - "./plugins:/verdaccio/plugins"
+    labels:
+      - traefik.http.services.verdaccio.loadbalancer.server.port=4873
+      - traefik.http.routers.verdaccio.service=verdaccio
+      - traefik.http.routers.verdaccio.rule=Host("npm.${DOMAIN}")
+      - traefik.http.routers.verdaccio.entrypoints=https
+      - traefik.http.routers.verdaccio.tls=true
+      - traefik.http.routers.verdaccio.tls.certresolver=${CERT_RESOLVER}
+      - traefik.docker.network=proxy
+      - traefik.http.routers.registry.middlewares=traefik-compress
+
+networks:
+  proxy:
+    external: true
