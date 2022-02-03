@@ -13,9 +13,9 @@ services:
     expose:
       - "4873"
     volumes:
-      - "./storage:/verdaccio/storage"
-      - "./config:/verdaccio/conf"
-      - "./plugins:/verdaccio/plugins"
+      - "verdaccio-storage:/verdaccio/storage"
+      - "verdaccio-config:/verdaccio/conf"
+      - "verdaccio-plugins:/verdaccio/plugins"
     labels:
       - traefik.http.services.verdaccio.loadbalancer.server.port=4873
       - traefik.http.routers.verdaccio.service=verdaccio
@@ -25,6 +25,11 @@ services:
       - traefik.http.routers.verdaccio.tls.certresolver=${CERT_RESOLVER}
       - traefik.docker.network=proxy
       - traefik.http.routers.registry.middlewares=traefik-compress
+
+volumes:
+  verdaccio-storage:
+  verdaccio-config:
+  verdaccio-plugins:
 
 networks:
   proxy:
