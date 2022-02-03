@@ -16,6 +16,7 @@ services:
       - "verdaccio-storage:/verdaccio/storage"
       - "verdaccio-config:/verdaccio/conf"
       - "verdaccio-plugins:/verdaccio/plugins"
+      - "verdaccio-htpasswd:/verdaccio/htpasswd"
     labels:
       - traefik.http.services.verdaccio.loadbalancer.server.port=4873
       - traefik.http.routers.verdaccio.service=verdaccio
@@ -30,6 +31,7 @@ volumes:
   verdaccio-storage:
   verdaccio-config:
   verdaccio-plugins:
+  verdaccio-htpasswd:
 
 networks:
   proxy:
