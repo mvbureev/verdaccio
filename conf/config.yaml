@@ -1,4 +1,4 @@
-#
+
 # This is the config file used for the docker images.
 # It allows all users to do anything, so don't use it on production systems.
 #
@@ -11,27 +11,36 @@
 #
 
 # path to a directory with all packages
-storage: /verdaccio/storage
+storage: /verdaccio/storage/data
 # path to a directory with plugins to include
 plugins: /verdaccio/plugins
 
 web:
   # WebUI is enabled as default, if you want disable it, just uncomment this line
   #enable: false
-  title: Newsdog
-  scope: "@mvbureev"
-  primary_color: "#232731"
+  title: npm.mvbureev.tech
   # comment out to disable gravatar support
   # gravatar: false
   # by default packages are ordercer ascendant (asc|desc)
   # sort_packages: asc
+  darkMode: true
+  # logo: http://somedomain/somelogo.png
+  favicon: https://mvbureev.tech/favicon.ico
+  # rateLimit:
+  #   windowMs: 1000
+  #   max: 10000
+
+# translate your registry, api i18n not available yet
+# i18n:
+# list of the available translations https://github.com/verdaccio/ui/tree/master/i18n/translations
+#   web: en-US
 
 auth:
   htpasswd:
     file: /verdaccio/storage/htpasswd
     # Maximum amount of users allowed to register, defaults to "+infinity".
     # You can set this to -1 to disable registration.
-    # max_users: 1000
+    max_users: 1
 
 # a list of other known repositories we can talk to
 uplinks:
@@ -46,18 +55,12 @@ uplinks:
     cache: false
 
 packages:
-  '@*/*':
+  '@mvbureev/*':
     # scoped packages
-    access: $all
+    access: $authenticated
     publish: $authenticated
     unpublish: $authenticated
     proxy: npmjs
-
-  '@mvbureev/*':
-    # 内网访问，无需认证
-    access: $all
-    publish: $all
-    unpublish: $all
 
   '**':
     # allow all users (including non-authenticated users) to read and
@@ -65,7 +68,7 @@ packages:
     #
     # you can specify usernames/groupnames (depending on your auth plugin)
     # and three keywords: "$all", "$anonymous", "$authenticated"
-    access: $all
+    access: $authenticated
 
     # allow all known users to publish/publish packages
     # (anyone can register by default, remember?)
@@ -75,29 +78,29 @@ packages:
     # if package is not available locally, proxy requests to 'npmjs' registry
     proxy: npmjs
 
+# You can specify HTTP/1.1 server keep alive timeout in seconds for incoming connections.
+# A value of 0 makes the http server behave similarly to Node.js versions prior to 8.0.0, which did not have a keep-alive timeout.
+# WORKAROUND: Through given configuration you can workaround following issue https://github.com/verdaccio/verdaccio/issues/301. Set to 0 in case 60 is not enough.
+server:
+  keepAliveTimeout: 60
+
 middlewares:
   audit:
     enabled: true
 
 # log settings
-logs:
-  # - { type: stdout, format: pretty, level: http }
-  # - { type: file, path: /verdaccio/logs/info.log, level: info }
-  - {
-      type: rotating-file,
-      format: json,
-      path: /verdaccio/logs/http.jsonl,
-      level: http,
-      options: { period: 1d, count: 30 },
-    }
+logs: { level: http, options: { period: 1d, count: 30 } }
 #experiments:
 #  # support for npm token command
 #  token: false
+#  # enable tarball URL redirect for hosting tarball with a different server, the tarball_url_redirect can be a template string
+#  tarball_url_redirect: 'https://mycdn.com/verdaccio/${packageName}/${filename}'
+#  # the tarball_url_redirect can be a function, takes packageName and filename and returns the url, when working with a js configuration file
+#  tarball_url_redirect(packageName, filename) {
+#    const signedUrl = // generate a signed url
+#    return signedUrl;
+#  }
 
-listen:
-  # - localhost:4873            # default value
-  # - http://localhost:4873     # same thing
-  # - 0.0.0.0:4873              # listen on all addresses (INADDR_ANY)
-  # - https://example.org:4873  # if you want to use https
-  # - "[::1]:4873"                # ipv6
-  # - unix:/tmp/verdaccio.sock    # unix socket
+# This affect the web and api (not developed yet)
+#i18n:
+#web: en-US
