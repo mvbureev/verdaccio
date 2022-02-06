@@ -11,6 +11,7 @@ deploy:
     - docker-compose version
     - docker info
   script:
+    - echo $HTPASSWD >> ./htpasswd
     - docker-compose up -d --force-recreate
   only:
     - main
