@@ -12,7 +12,5 @@ deploy:
     - docker info
   script:
     - docker-compose up -d --force-recreate
-    - touch /verdaccio/storage/htpasswd
-    - echo $HTPASSWD >> /verdaccio/storage/htpasswd
   only:
     - main
