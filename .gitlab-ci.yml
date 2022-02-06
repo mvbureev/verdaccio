@@ -11,6 +11,6 @@ deploy:
     - docker-compose version
     - docker info
   script:
-    - docker-compose up -d
+    - docker-compose up -d --force-recreate
   only:
     - main
