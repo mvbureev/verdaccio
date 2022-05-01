@@ -18,14 +18,14 @@ plugins: /verdaccio/plugins
 web:
   # WebUI is enabled as default, if you want disable it, just uncomment this line
   #enable: false
-  title: npm.mvbureev.dev
+  title: npm.mvbureev.com
   # comment out to disable gravatar support
   # gravatar: false
   # by default packages are ordercer ascendant (asc|desc)
   # sort_packages: asc
   darkMode: true
   # logo: http://somedomain/somelogo.png
-  favicon: https://mvbureev.dev/favicon.ico
+  favicon: https://mvbureev.com/favicon.ico
   # rateLimit:
   #   windowMs: 1000
   #   max: 10000
